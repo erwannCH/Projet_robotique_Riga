@@ -10,6 +10,8 @@ function [tetas]=NewtonABB(thetas,M)
     %Solves the inverse kinematics problem for a desired position and
     % orientation given by matrix [M] and a initial guess for the values of
     % the joints of the robot
+    % Initialisation de la liste pour stocker les valeurs du déterminant
+    determinant_values = [];
     t1=thetas(1);
     t2=thetas(2);
     t3=thetas(3);
@@ -132,8 +134,12 @@ function [tetas]=NewtonABB(thetas,M)
        X(5,:)=J(8,:);
        X(6,:)=J(9,:);
 
+       % Calcul du déterminant de la matrice jacobienne
        detX=abs(det(X));
        disp(detX);
+        % Ajouter la valeur du déterminant à la liste
+        determinant_values(end+1) = detX;
+
        %J
        %funt_value=f'      
        %ds= -J\f';
@@ -154,6 +160,15 @@ function [tetas]=NewtonABB(thetas,M)
             break;
         end
     end
+
+    % Enregistrer la liste des valeurs du déterminant dans un fichier JSON
+    data.detX = determinant_values;
+    jsonStr = jsonencode(data);
+    fid = fopen('detX.json', 'a');  % Ouvrir le fichier en mode d'ajout
+    fprintf(fid, '%s\n', jsonStr);  % Écrire une nouvelle ligne avec les nouvelles données
+    fclose(fid);
+
+
     % %Normalize
     rnd=kk/360;
     entrnd=fix(rnd);

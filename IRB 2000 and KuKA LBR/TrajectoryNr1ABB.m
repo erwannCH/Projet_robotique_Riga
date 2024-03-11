@@ -8,6 +8,18 @@ T06=ABB(tetas);
 points_x = [];
 points_y = [];
 
+% Initialisation de la structure de données pour stocker les valeurs du déterminant
+data = struct('detX', []);
+
+% Convertir la structure en chaîne JSON
+jsonStr = jsonencode(data);
+
+% Écrire la chaîne JSON dans un fichier
+fid = fopen('detX.json', 'w');
+fprintf(fid, '%s', jsonStr);
+fclose(fid);
+
+
 for X=0:5:200
     M=T06*TrasX(X);
     [tetas]=NewtonABB(tetas,M);
@@ -27,11 +39,6 @@ for A=0:5:90
     M=T06*TrasX(sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(A);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -39,11 +46,6 @@ for X=0:5:100
     M=T06*TrasX(X);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -52,11 +54,6 @@ for A=0:5:90
     M=T06*TrasX(sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(A);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -64,11 +61,6 @@ for X=0:5:400
     M=T06*TrasX(X);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -77,11 +69,6 @@ for A=0:5:90
     M=T06*TrasX(sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(A);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -89,11 +76,6 @@ for X=0:5:100
     M=T06*TrasX(X);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -102,11 +84,6 @@ for A=0:5:90
     M=T06*TrasX(sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(A);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
@@ -114,11 +91,6 @@ for X=0:5:200
     M=T06*TrasX(X);
     [tetas]=NewtonABB(tetas,M);
     ABBplot(tetas);
-    det_J = determinant_Jacobienne(tetas, @ABB, M, 1e-5);
-    if abs(det_J) > 1e-6
-        points_x = [points_x, M(1, 4)];
-        points_y = [points_y, M(2, 4)];
-    end
 end
 T06=M;
 
