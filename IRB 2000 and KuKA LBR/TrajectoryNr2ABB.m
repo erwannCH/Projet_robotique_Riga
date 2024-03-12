@@ -6,6 +6,18 @@ grid on
 tetas=[0 0 0 0 0 0];
 T06=ABB(tetas)
 
+
+% Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
+data = struct('detX', [], 'posX', [], 'posY', [], 'posZ', []);
+
+% Convertir la structure en chaîne JSON
+jsonStr = jsonencode(data);
+
+% Écrire la chaîne JSON dans un fichier
+fid = fopen('detX.json', 'w');
+fprintf(fid, '%s', jsonStr);
+fclose(fid);
+
 %top row
 for A=0:5:180
     R=50;

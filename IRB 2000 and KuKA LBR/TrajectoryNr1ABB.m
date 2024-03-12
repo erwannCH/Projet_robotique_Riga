@@ -4,10 +4,6 @@ axis([-limite limite -limite limite -limite limite])
 tetas=[0 12.6641 -11.3436 0 -91.3205 -0];
 T06=ABB(tetas);
 
-% Initialisation des matrices pour stocker les points significatifs
-points_x = [];
-points_y = [];
-
 % Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
 data = struct('detX', [], 'posX', [], 'posY', [], 'posZ', []);
 
@@ -86,10 +82,3 @@ for X=0:5:200
     ABBplot(tetas);
 end
 T06=M;
-
-% Tracer la carte des points significatifs
-%scatter(points_x, points_y, 'filled');
-%xlabel('X');
-%ylabel('Y');
-%title('Carte des points significatifs de la trajectoire');
-
