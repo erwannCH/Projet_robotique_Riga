@@ -21,7 +21,6 @@ function [tetas]=NewtonABB(thetas,M)
     
     damp=1;
     
-    
     for n=1:100
         
        t1p=t1+damp;
@@ -31,13 +30,13 @@ function [tetas]=NewtonABB(thetas,M)
        t5p=t5+damp;
        t6p=t6+damp;
     
-       J(1,1)=(f1(t1p,t2,t3,t4,t5,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
+       J(1,1)=(f1(t1p,t2,t3,t4,t5,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;      
        J(1,2)=(f1(t1,t2p,t3,t4,t5,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
        J(1,3)=(f1(t1,t2,t3p,t4,t5,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
        J(1,4)=(f1(t1,t2,t3,t4p,t5,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
        J(1,5)=(f1(t1,t2,t3,t4,t5p,t6, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
-       J(1,6)=(f1(t1,t2,t3,t4,t5,t6p, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp;
-    
+       J(1,6)=(f1(t1,t2,t3,t4,t5,t6p, M)-f1(t1,t2,t3,t4,t5,t6, M))/damp; 
+
        J(2,1)=(f2(t1p,t2,t3,t4,t5,t6, M)-f2(t1,t2,t3,t4,t5,t6, M))/damp;
        J(2,2)=(f2(t1,t2p,t3,t4,t5,t6, M)-f2(t1,t2,t3,t4,t5,t6, M))/damp;
        J(2,3)=(f2(t1,t2,t3p,t4,t5,t6, M)-f2(t1,t2,t3,t4,t5,t6, M))/damp;
@@ -127,18 +126,24 @@ function [tetas]=NewtonABB(thetas,M)
        f(10)=f10(t1,t2,t3,t4,t5,t6,M);
        f(11)=f11(t1,t2,t3,t4,t5,t6,M);
        f(12)=f12(t1,t2,t3,t4,t5,t6,M);
+       
+       X(1,:)=J(1,:);
+       X(2,:)=J(2,:);
+       X(3,:)=J(3,:);
+       X(4,:)=J(7,:);
+       X(5,:)=J(8,:);
+       X(6,:)=J(9,:);
 
-       % Calculer le déterminant de la matrice des moindres carrés
-       detX = determinant_Jacobienne(J);
+       % Calcul du déterminant de la matrice jacobienne
+       detX=abs(det(X));
+       disp(detX);
+        % Ajouter la valeur du déterminant à la liste
+        determinant_values(end+1) = detX;
 
-       % Ajouter la valeur du déterminant à la liste
-       determinant_values(end+1) = detX;
-    
        %J
        %funt_value=f'      
        %ds= -J\f';
        ds=pinv(J)*(-f');
-    
     
        t1=t1+ds(1);
        t2=t2+ds(2);
@@ -148,7 +153,7 @@ function [tetas]=NewtonABB(thetas,M)
        t6=t6+ds(6);
     
     
-       t=[t1 t2 t3 t4 t5 t6]; 
+       t=[t1 t2 t3 t4 t5 t6];
        kk=t;
     
         if (abs(f(1))<1.0e-9 && abs (f(2))<1.0e-9 && abs (f(3))<1.0e-9 && abs (f(4))<1.0e-9 && abs (f(5))<1.0e-9 && abs (f(6))<1.0e-9 && abs (f(7))<1.0e-9 && abs (f(8))<1.0e-9 && abs (f(9))<1.0e-9 && abs (f(10))<1.0e-9 && abs (f(11))<1.0e-9 && abs (f(12))<1.0e-9)
@@ -163,6 +168,7 @@ function [tetas]=NewtonABB(thetas,M)
     fprintf(fid, '%s\n', jsonStr);  % Écrire une nouvelle ligne avec les nouvelles données
     fclose(fid);
 
+
     % %Normalize
     rnd=kk/360;
     entrnd=fix(rnd);
@@ -171,7 +177,7 @@ function [tetas]=NewtonABB(thetas,M)
     tetas=kk2n;
     
     
-    fprintf('t1=%5.3f, t2=%5.3f, t3=%5.3f, t4=%5.3f, t5=%5.3f, t6=%5.3f\n', kk2n(1),kk2n(2),kk2n(3),kk2n(4),kk2n(5),kk2n(6))
+    %fprintf('t1=%5.3f, t2=%5.3f, t3=%5.3f, t4=%5.3f, t5=%5.3f, t6=%5.3f\n', kk2n(1),kk2n(2),kk2n(3),kk2n(4),kk2n(5),kk2n(6))
 
 end
 
