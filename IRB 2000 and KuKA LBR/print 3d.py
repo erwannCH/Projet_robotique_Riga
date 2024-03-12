@@ -1,5 +1,7 @@
 import json
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
 # Chemin vers le fichier detX.json
 chemin_fichier = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/IRB 2000 and KuKA LBR/detX.json"
@@ -54,7 +56,6 @@ valeurs_posX = aplatir_liste(valeurs_posX)
 valeurs_posY = aplatir_liste(valeurs_posY)
 valeurs_posZ = aplatir_liste(valeurs_posZ)
 
-
 # Création du graphique des valeurs de detX
 plt.figure()
 plt.plot(valeurs_detX)
@@ -63,29 +64,12 @@ plt.xlabel("Index")
 plt.ylabel("Valeur")
 plt.grid(True)
 
-# Création du graphique des positions X
-plt.figure()
-plt.plot(valeurs_posX)
-plt.title("Graphique des positions X")
-plt.xlabel("Index")
-plt.ylabel("Position X")
-plt.grid(True)
-
-# Création du graphique des positions Y
-plt.figure()
-plt.plot(valeurs_posY)
-plt.title("Graphique des positions Y")
-plt.xlabel("Index")
-plt.ylabel("Position Y")
-plt.grid(True)
-
-# Création du graphique des positions Z
-plt.figure()
-plt.plot(valeurs_posZ)
-plt.title("Graphique des positions Z")
-plt.xlabel("Index")
-plt.ylabel("Position Z")
-plt.grid(True)
+# Création du graphique des positions en 3D
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(valeurs_posX, valeurs_posY, valeurs_posZ, c=valeurs_detX, cmap='coolwarm')
+ax.set_xlabel('Position X')
+ax.set_ylabel('Position Y')
+ax.set_zlabel('Position Z')
 
 plt.show()
-

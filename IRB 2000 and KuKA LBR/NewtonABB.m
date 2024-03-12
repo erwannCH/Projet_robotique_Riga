@@ -12,6 +12,9 @@ function [tetas]=NewtonABB(thetas,M)
     % the joints of the robot
     % Initialisation de la liste pour stocker les valeurs du déterminant
     determinant_values = [];
+    positionsX_values = [];
+    positionsY_values = [];
+    positionsZ_values = [];
     t1=thetas(1);
     t2=thetas(2);
     t3=thetas(3);
@@ -133,6 +136,16 @@ function [tetas]=NewtonABB(thetas,M)
 
        % Ajouter la valeur du déterminant à la liste
        determinant_values(end+1) = detX;
+
+       % Extraire les positions X, Y et Z du robot de la matrice de transformation M
+       positionX = M(1,4);
+       positionY = M(2,4);
+       positionZ = M(3,4);
+
+       % Ajouter la valeur des positions à la liste
+       positionsX_values(end+1) = positionX;
+       positionsY_values(end+1) = positionY;
+       positionsZ_values(end+1) = positionZ;
     
        %J
        %funt_value=f'      
@@ -156,8 +169,13 @@ function [tetas]=NewtonABB(thetas,M)
         end
     end
 
-    % Enregistrer la liste des valeurs du déterminant dans un fichier JSON
+    % Ajouter les positions du robot à la structure de données et le déterminant
+    data.posX = positionsX_values;
+    data.posY = positionsY_values;
+    data.posZ = positionsZ_values;
     data.detX = determinant_values;
+
+    % Enregistrer la liste des valeurs dans un fichier JSON
     jsonStr = jsonencode(data);
     fid = fopen('detX.json', 'a');  % Ouvrir le fichier en mode d'ajout
     fprintf(fid, '%s\n', jsonStr);  % Écrire une nouvelle ligne avec les nouvelles données

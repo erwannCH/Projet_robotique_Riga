@@ -8,8 +8,8 @@ T06=ABB(tetas);
 points_x = [];
 points_y = [];
 
-% Initialisation de la structure de données pour stocker les valeurs du déterminant
-data = struct('detX', []);
+% Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
+data = struct('detX', [], 'posX', [], 'posY', [], 'posZ', []);
 
 % Convertir la structure en chaîne JSON
 jsonStr = jsonencode(data);
