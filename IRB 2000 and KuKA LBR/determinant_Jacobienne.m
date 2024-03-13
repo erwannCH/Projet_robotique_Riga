@@ -33,6 +33,7 @@ function detJ = determinant_Jacobienne(J)
     truncated_det = det(J_truncated);
     
     % Calculer la moyene des déterminant
-    det_mean = mean([detMC, SVD_det, pInv_det, truncated_det]);
+    %det_mean = mean([detMC, SVD_det, pInv_det, truncated_det]);
+    det_mean = mean([detMC, SVD_det]);
     detJ = [detMC, SVD_det, pInv_det, truncated_det, det_mean];
 end

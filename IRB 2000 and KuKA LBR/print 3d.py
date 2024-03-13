@@ -3,15 +3,31 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-# Chemin vers le fichier
-name = "TrajectoryNr1ABB"
-#name = "TrajectoryNr2ABB"
-#name = "TrajectoryNr3ABB"
-#name = "TrajectoryNrXABB"
-#name = "TrajectoryNrYABB"
-#name = "TrajectoryNr1KUKA"
-#name = "TrajectoryNr2KUKA"
-chemin_fichier = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/IRB 2000 and KuKA LBR/"+name+".json"
+# Chemins de base pour les fichiers ABB et KUKA
+abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
+kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
+
+# Nom du fichier
+# name = "TrajectoryNr1ABB"
+# name = "TrajectoryNr2ABB"
+# name = "TrajectoryNr3ABB"
+# name = "TrajectoryNrXABB"
+# name = "TrajectoryNrYABB"
+# name = "TrajectoryNr1KUKA"
+name = "TrajectoryNr2KUKA"
+
+# Déterminer le chemin de base en fonction du nom du fichier
+if "ABB" in name:
+    base_path = abb_base_path
+elif "KUKA" in name:
+    base_path = kuka_base_path
+else:
+    print("Nom de fichier invalide")
+    exit()
+
+# Construire le chemin complet du fichier
+chemin_fichier = base_path + name + ".json"
+
 
 # Fonction pour extraire les valeurs du fichier JSON
 def extraire_valeurs_json(chemin_fichier):

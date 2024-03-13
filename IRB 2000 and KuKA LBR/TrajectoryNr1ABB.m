@@ -6,7 +6,7 @@ T06=ABB(tetas);
 
 % Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
 name = 'TrajectoryNr1ABB'
-filename = strcat(name, '.json');
+filename = fullfile('C:\Users\erwan\OneDrive\Bureau\Pronjet_robotique_Riga\data\abb', strcat(name, '.json'));
 data = struct('detMC', [], 'SVD_det', [], 'pInv_det', [], 'truncated_det', [] ,'detmean', [], 'posX', [], 'posY', [], 'posZ', []);
 
 % Convertir la structure en chaîne JSON
