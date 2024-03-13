@@ -3,16 +3,23 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
-# Chemin vers le fichier detX.json
-#name = "TrajectoryNr1ABB"
+# Chemin vers le fichier
+name = "TrajectoryNr1ABB"
 #name = "TrajectoryNr2ABB"
+#name = "TrajectoryNr3ABB"
+#name = "TrajectoryNrXABB"
+#name = "TrajectoryNrYABB"
 #name = "TrajectoryNr1KUKA"
-name = "TrajectoryNr2KUKA"
+#name = "TrajectoryNr2KUKA"
 chemin_fichier = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/IRB 2000 and KuKA LBR/"+name+".json"
 
 # Fonction pour extraire les valeurs du fichier JSON
 def extraire_valeurs_json(chemin_fichier):
-    valeurs_detX = []
+    valeurs_detMC = []
+    valeurs_SVD_det = []
+    valeurs_pInv_det = []
+    valeurs_truncated_det = []
+    valeurs_detmean = []
     valeurs_posX = []
     valeurs_posY = []
     valeurs_posZ = []
@@ -20,8 +27,16 @@ def extraire_valeurs_json(chemin_fichier):
         for ligne in fichier:
             try:
                 donnees = json.loads(ligne)
-                if 'detX' in donnees:
-                    valeurs_detX.append(donnees['detX'])
+                if 'detMC' in donnees:
+                    valeurs_detMC.append(donnees['detMC'])
+                if 'SVD_det' in donnees:
+                    valeurs_SVD_det.append(donnees['SVD_det'])
+                if 'pInv_det' in donnees:
+                    valeurs_pInv_det.append(donnees['pInv_det'])
+                if 'truncated_det' in donnees:
+                    valeurs_truncated_det.append(donnees['truncated_det'])
+                if 'detmean' in donnees:
+                    valeurs_detmean.append(donnees['detmean'])
                 if 'posX' in donnees:
                     if isinstance(donnees['posX'], list):
                         valeurs_posX.extend(donnees['posX'])
@@ -40,7 +55,7 @@ def extraire_valeurs_json(chemin_fichier):
             except json.JSONDecodeError:
                 # Handle invalid JSON
                 pass
-    return valeurs_detX, valeurs_posX, valeurs_posY, valeurs_posZ
+    return valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs_detmean, valeurs_posX, valeurs_posY, valeurs_posZ
 
 def aplatir_liste(liste):
     aplatie = []
@@ -52,17 +67,21 @@ def aplatir_liste(liste):
     return aplatie
 
 # Récupération des valeurs
-valeurs_detX, valeurs_posX, valeurs_posY, valeurs_posZ = extraire_valeurs_json(chemin_fichier)
+valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs_detmean, valeurs_posX, valeurs_posY, valeurs_posZ = extraire_valeurs_json(chemin_fichier)
 
 # Aplatissement des listes
-valeurs_detX = aplatir_liste(valeurs_detX)
+valeurs_detMC = aplatir_liste(valeurs_detMC)
+valeurs_SVD_det = aplatir_liste(valeurs_SVD_det)
+valeurs_pInv_det = aplatir_liste(valeurs_pInv_det)
+valeurs_truncated_det = aplatir_liste(valeurs_truncated_det)
+valeurs_detmean = aplatir_liste(valeurs_detmean)
 valeurs_posX = aplatir_liste(valeurs_posX)
 valeurs_posY = aplatir_liste(valeurs_posY)
 valeurs_posZ = aplatir_liste(valeurs_posZ)
 
-# Création du graphique des valeurs de detX
+# Création du graphique des valeurs de detmean
 plt.figure()
-plt.plot(valeurs_detX)
+plt.plot(valeurs_SVD_det)
 plt.title("Graphique des valeurs de" + name)
 plt.xlabel("Index")
 plt.ylabel("Valeur")
@@ -71,7 +90,7 @@ plt.grid(True)
 # Création du graphique des positions en 3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(valeurs_posX, valeurs_posY, valeurs_posZ, c=valeurs_detX, cmap='coolwarm')
+ax.scatter(valeurs_posX, valeurs_posY, valeurs_posZ, c=valeurs_SVD_det, cmap='Spectral')
 ax.set_xlabel('Position X')
 ax.set_ylabel('Position Y')
 ax.set_zlabel('Position Z')

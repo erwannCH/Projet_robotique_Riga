@@ -8,7 +8,7 @@ T07=KUKA(tetas);
 % Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
 name = 'TrajectoryNr2KUKA'
 filename = strcat(name, '.json');
-data = struct(name, [], 'posX', [], 'posY', [], 'posZ', []);
+data = struct('detMC', [], 'SVD_det', [], 'pInv_det', [], 'truncated_det', [] ,'detmean', [], 'posX', [], 'posY', [], 'posZ', []);
 
 % Convertir la structure en chaîne JSON
 jsonStr = jsonencode(data);
