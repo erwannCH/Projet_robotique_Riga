@@ -5,7 +5,7 @@
 % Lastly the over-determined equation system is solved using the
 % Moore-Penrose pseudo-inverse.
 
-function [tetas]=NewtonABB(thetas,M)
+function [tetas]=NewtonABB(thetas,M,filename)
     %Function developed by Emmanuel Merchán
     %Solves the inverse kinematics problem for a desired position and
     % orientation given by matrix [M] and a initial guess for the values of
@@ -177,7 +177,7 @@ function [tetas]=NewtonABB(thetas,M)
 
     % Enregistrer la liste des valeurs dans un fichier JSON
     jsonStr = jsonencode(data);
-    fid = fopen('detX.json', 'a');  % Ouvrir le fichier en mode d'ajout
+    fid = fopen(filename, 'a');  % Ouvrir le fichier en mode d'ajout
     fprintf(fid, '%s\n', jsonStr);  % Écrire une nouvelle ligne avec les nouvelles données
     fclose(fid);
 

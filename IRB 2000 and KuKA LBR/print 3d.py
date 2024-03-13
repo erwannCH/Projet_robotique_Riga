@@ -4,7 +4,11 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 # Chemin vers le fichier detX.json
-chemin_fichier = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/IRB 2000 and KuKA LBR/detX.json"
+#name = "TrajectoryNr1ABB"
+#name = "TrajectoryNr2ABB"
+#name = "TrajectoryNr1KUKA"
+name = "TrajectoryNr2KUKA"
+chemin_fichier = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/IRB 2000 and KuKA LBR/"+name+".json"
 
 # Fonction pour extraire les valeurs du fichier JSON
 def extraire_valeurs_json(chemin_fichier):
@@ -59,7 +63,7 @@ valeurs_posZ = aplatir_liste(valeurs_posZ)
 # Création du graphique des valeurs de detX
 plt.figure()
 plt.plot(valeurs_detX)
-plt.title("Graphique des valeurs de detX")
+plt.title("Graphique des valeurs de" + name)
 plt.xlabel("Index")
 plt.ylabel("Valeur")
 plt.grid(True)

@@ -8,13 +8,15 @@ T06=ABB(tetas)
 
 
 % Initialisation de la structure de données pour stocker les valeurs du déterminant et les positions du robot
+name = 'TrajectoryNr2ABB'
+filename = strcat(name, '.json');
 data = struct('detX', [], 'posX', [], 'posY', [], 'posZ', []);
 
 % Convertir la structure en chaîne JSON
 jsonStr = jsonencode(data);
 
 % Écrire la chaîne JSON dans un fichier
-fid = fopen('detX.json', 'w');
+fid = fopen(filename, 'w');
 fprintf(fid, '%s', jsonStr);
 fclose(fid);
 
@@ -22,7 +24,7 @@ fclose(fid);
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -30,28 +32,28 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -60,7 +62,7 @@ T06=M;
 for X=0:5:100
     R=50;
     M=T06*TrasX(-X);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -69,7 +71,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -78,7 +80,7 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -87,7 +89,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -96,7 +98,7 @@ T06=M;
 for X=0:5:50
     R=50;
     M=T06*TrasX(-X);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -105,7 +107,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -114,7 +116,7 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -123,7 +125,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -132,7 +134,7 @@ T06=M;
 for X=0:5:200
     R=50;
     M=T06*TrasX(-X);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -141,7 +143,7 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -149,28 +151,28 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -179,7 +181,7 @@ T06=M;
 for X=0:5:100
     R=50;
     M=T06*TrasX(-X);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -188,7 +190,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -197,7 +199,7 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -206,7 +208,7 @@ T06=M;
 for A=0:5:180
     R=25;
     M=T06*TrasX(-sind(A)*R)*TrasY(-(cosd(A)-1)*R)*RotaZ(-A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -215,7 +217,7 @@ T06=M;
 for A=0:5:180
     R=50;
     M=T06*TrasX(-sind(A)*R)*TrasY((cosd(A)-1)*R)*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -224,7 +226,7 @@ T06=M;
 for A=0:-3:-90
     R=50;
     M=T06*RotaZ(A);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M;
@@ -233,7 +235,7 @@ T06=M;
 for X=0:5:100
     R=50;
     M=T06*TrasX(-X);
-    [tetas]=NewtonABB(tetas,M);
+    [tetas]=NewtonABB(tetas,M,filename)
     ABBplot(tetas);
 end
 T06=M

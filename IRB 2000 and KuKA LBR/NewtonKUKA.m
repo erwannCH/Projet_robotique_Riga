@@ -1,5 +1,8 @@
-function [tetas]=NewtonKUKA(tetas,M)
-    
+function [tetas]=NewtonKUKA(tetas,M, filename)
+    determinant_values = [];
+    positionsX_values = [];
+    positionsY_values = [];
+    positionsZ_values = [];
     t1=tetas(1);
     t2=tetas(2);
     t3=tetas(3);
@@ -128,6 +131,22 @@ function [tetas]=NewtonKUKA(tetas,M)
         f(10)=f10_1(t1,t2,t3,t4,t5,t6,t7,M);
         f(11)=f11_1(t1,t2,t3,t4,t5,t6,t7,M);
         f(12)=f12_1(t1,t2,t3,t4,t5,t6,t7,M);
+
+        % Calculer le déterminant de la matrice des moindres carrés
+       detX = determinant_Jacobienne(J);
+
+       % Ajouter la valeur du déterminant à la liste
+       determinant_values(end+1) = detX;
+
+       % Extraire les positions X, Y et Z du robot de la matrice de transformation M
+       positionX = M(1,4);
+       positionY = M(2,4);
+       positionZ = M(3,4);
+
+       % Ajouter la valeur des positions à la liste
+       positionsX_values(end+1) = positionX;
+       positionsY_values(end+1) = positionY;
+       positionsZ_values(end+1) = positionZ;
         
         %ds=-J/f';
         ds=pinv(J)*(-f');
@@ -156,6 +175,17 @@ function [tetas]=NewtonKUKA(tetas,M)
 
     end
     
+    % Ajouter les positions du robot à la structure de données et le déterminant
+    data.posX = positionsX_values;
+    data.posY = positionsY_values;
+    data.posZ = positionsZ_values;
+    data.detX = determinant_values;
+
+    % Enregistrer la liste des valeurs dans un fichier JSON
+    jsonStr = jsonencode(data);
+    fid = fopen(filename, 'a');  % Ouvrir le fichier en mode d'ajout
+    fprintf(fid, '%s\n', jsonStr);  % Écrire une nouvelle ligne avec les nouvelles données
+    fclose(fid);
 
     fprintf('t1=%5.3f, t2=%5.3f, t3=%5.3f, t4=%5.3f, t5=%5.3f, t6=%5.3f\n', kk2n(1),kk2n(2),kk2n(3),kk2n(4),kk2n(5),kk2n(6))
 end
