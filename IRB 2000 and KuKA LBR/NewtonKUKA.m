@@ -1,9 +1,5 @@
 function [tetas]=NewtonKUKA(tetas,M, filename)
-    detMC_values = [];
-    SVD_det_values = [];
-    pInv_det_values = [];
-    truncated_det_values = [];
-    detmean_values = [];
+    det_values = [];
     positionsX_values = [];
     positionsY_values = [];
     positionsZ_values = [];
@@ -137,14 +133,11 @@ function [tetas]=NewtonKUKA(tetas,M, filename)
         f(12)=f12_1(t1,t2,t3,t4,t5,t6,t7,M);
 
         % Calculer le déterminant de la matrice des moindres carrés
-       det = determinant_Jacobienne(J);
+        J_sub = J(1:7, 1:7); % Extrait la sous-matrice 7x7
+       det = calculateDeterminant(J_sub);
 
        % Ajouter la valeur du déterminant à la liste
-       detMC_values(end+1) = det(1);
-       SVD_det_values(end+1) = det(2);
-       pInv_det_values(end+1) = det(3);
-       truncated_det_values(end+1) = det(4);
-       detmean_values(end+1) = det(5);
+       det_values(end+1) = det;
 
        % Extraire les positions X, Y et Z du robot de la matrice de transformation M
        positionX = M(1,4);
@@ -187,11 +180,7 @@ function [tetas]=NewtonKUKA(tetas,M, filename)
     data.posX = positionsX_values;
     data.posY = positionsY_values;
     data.posZ = positionsZ_values;
-    data.detMC = detMC_values;
-    data.SVD_det = SVD_det_values;
-    data.pInv_det = pInv_det_values;
-    data.truncated_det = truncated_det_values;
-    data.detmean = detmean_values;
+    data.detMC = det_values;
 
     % Enregistrer la liste des valeurs dans un fichier JSON
     jsonStr = jsonencode(data);

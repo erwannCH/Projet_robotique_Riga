@@ -6,13 +6,13 @@ abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/
 kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
 
 # Nom du fichier
-# name = "TrajectoryNr1ABB"
-# name = "TrajectoryNr2ABB"
-# name = "TrajectoryNr3ABB"
-# name = "TrajectoryNrXABB"
-# name = "TrajectoryNrYABB"
-# name = "TrajectoryNr1KUKA"
-name = "TrajectoryNr2KUKA"
+name = "TrajectoryNr1ABB"
+#name = "TrajectoryNr2ABB"
+#name = "TrajectoryNr3ABB"
+#name = "TrajectoryNrXABB"
+#name = "TrajectoryNrYABB"
+#name = "TrajectoryNr1KUKA"
+#name = "TrajectoryNr2KUKA"
 
 # Déterminer le chemin de base en fonction du nom du fichier
 if "ABB" in name:

@@ -1,20 +1,16 @@
 import json
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+from scipy.spatial import KDTree
+import heapq
+import networkx as nx
 
 # Chemins de base pour les fichiers ABB et KUKA
 abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
 kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
 
 # Nom du fichier
-#name = "TrajectoryNr1ABB" 
-#name = "TrajectoryNr2ABB"
-#name = "TrajectoryNr3ABB"
-#name = "TrajectoryNrXABB"
-#name = "TrajectoryNrYABB"
-name = "TrajectoryNr1KUKA"
-#name = "TrajectoryNr2KUKA"
+name = "TrajectoryAllPointsABB"
 
 # Déterminer le chemin de base en fonction du nom du fichier
 if "ABB" in name:
@@ -27,7 +23,6 @@ else:
 
 # Construire le chemin complet du fichier
 chemin_fichier = base_path + name + ".json"
-
 
 # Fonction pour extraire les valeurs du fichier JSON
 def extraire_valeurs_json(chemin_fichier):
@@ -83,32 +78,61 @@ def aplatir_liste(liste):
     return aplatie
 
 # Récupération des valeurs
+print("Étape 1 : Récupération des valeurs à partir du fichier JSON")
 valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs_detmean, valeurs_posX, valeurs_posY, valeurs_posZ = extraire_valeurs_json(chemin_fichier)
 
 # Aplatissement des listes
+print("Étape 2 : Aplatissement des listes")
 valeurs_detMC = aplatir_liste(valeurs_detMC)
 valeurs_SVD_det = aplatir_liste(valeurs_SVD_det)
-valeurs_pInv_det = aplatir_liste(valeurs_pInv_det)
-valeurs_truncated_det = aplatir_liste(valeurs_truncated_det)
-valeurs_detmean = aplatir_liste(valeurs_detmean)
 valeurs_posX = aplatir_liste(valeurs_posX)
 valeurs_posY = aplatir_liste(valeurs_posY)
 valeurs_posZ = aplatir_liste(valeurs_posZ)
 
-# Création du graphique des valeurs de detmean
-plt.figure()
-plt.plot(valeurs_detMC)
-plt.title("Graphique des valeurs de" + name)
-plt.xlabel("Index")
-plt.ylabel("Valeur")
-plt.grid(True)
+# Convertir les listes en tableaux numpy
+print("Étape 3 : Conversion des listes en tableaux numpy")
+valeurs_detMC = np.array(valeurs_detMC)
+valeurs_SVD_det = np.array(valeurs_SVD_det)
+valeurs_posX = np.array(valeurs_posX)
+valeurs_posY = np.array(valeurs_posY)
+valeurs_posZ = np.array(valeurs_posZ)
 
-# Création du graphique des positions en 3D
+# Créer un tableau de coordonnées
+coordonnees = np.stack((valeurs_posX, valeurs_posY, valeurs_posZ), axis=-1)
+
+# Définir les positions de départ et d'arrivée
+depart = np.array([0, 0, 0])
+arrivee = np.array([10, 10, 10])
+
+# Calculer la distance entre chaque point et la position d'arrivée
+distances = np.linalg.norm(coordonnees - arrivee, axis=-1)
+
+# Définir une fonction de coût personnalisée pour combiner la distance et la valeur du déterminant
+def cout(distance, detMC, alpha=0.5):
+    return alpha * distance + (1 - alpha) * (1 - detMC)
+
+# Calculer le coût pour chaque point
+cout_detMC = cout(distances, valeurs_detMC)
+
+# Trier les points en fonction de leur coût et sélectionner le meilleur chemin
+best_indices = np.argsort(cout_detMC)
+best_path = coordonnees[best_indices]
+
+# Trouver l'index de la position de départ dans le meilleur chemin
+depart_index = np.argmin(np.linalg.norm(best_path - depart, axis=-1))
+
+# Créer le chemin à partir de la position de départ vers la position d'arrivée
+chemin = best_path[depart_index:]
+
+# Afficher le chemin
+for i, position in enumerate(chemin):
+    print(f"Étape {i} : {position}")
+
+# Tracer le chemin en 3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.scatter(valeurs_posX, valeurs_posY, valeurs_posZ, c=valeurs_SVD_det, cmap='Spectral')
-ax.set_xlabel('Position X')
-ax.set_ylabel('Position Y')
-ax.set_zlabel('Position Z')
-
+ax.scatter(chemin[:, 0], chemin[:, 1], chemin[:, 2])
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
 plt.show()

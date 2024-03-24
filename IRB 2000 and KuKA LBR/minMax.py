@@ -1,6 +1,5 @@
 import json
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 # Chemins de base pour les fichiers ABB et KUKA
@@ -8,13 +7,14 @@ abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/
 kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
 
 # Nom du fichier
-#name = "TrajectoryNr1ABB" 
+#name = "TrajectoryNr1ABB"
 #name = "TrajectoryNr2ABB"
 #name = "TrajectoryNr3ABB"
 #name = "TrajectoryNrXABB"
 #name = "TrajectoryNrYABB"
-name = "TrajectoryNr1KUKA"
+#name = "TrajectoryNr1KUKA"
 #name = "TrajectoryNr2KUKA"
+name = "TrajectoryAllPointsABB"
 
 # Déterminer le chemin de base en fonction du nom du fichier
 if "ABB" in name:
@@ -88,27 +88,62 @@ valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs
 # Aplatissement des listes
 valeurs_detMC = aplatir_liste(valeurs_detMC)
 valeurs_SVD_det = aplatir_liste(valeurs_SVD_det)
-valeurs_pInv_det = aplatir_liste(valeurs_pInv_det)
-valeurs_truncated_det = aplatir_liste(valeurs_truncated_det)
-valeurs_detmean = aplatir_liste(valeurs_detmean)
 valeurs_posX = aplatir_liste(valeurs_posX)
 valeurs_posY = aplatir_liste(valeurs_posY)
 valeurs_posZ = aplatir_liste(valeurs_posZ)
 
-# Création du graphique des valeurs de detmean
-plt.figure()
-plt.plot(valeurs_detMC)
-plt.title("Graphique des valeurs de" + name)
-plt.xlabel("Index")
-plt.ylabel("Valeur")
-plt.grid(True)
+# Convertir les listes en tableaux numpy
+valeurs_detMC = np.array(valeurs_detMC)
+valeurs_SVD_det = np.array(valeurs_SVD_det)
+valeurs_posX = np.array(valeurs_posX)
+valeurs_posY = np.array(valeurs_posY)
+valeurs_posZ = np.array(valeurs_posZ)
 
-# Création du graphique des positions en 3D
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(valeurs_posX, valeurs_posY, valeurs_posZ, c=valeurs_SVD_det, cmap='Spectral')
-ax.set_xlabel('Position X')
-ax.set_ylabel('Position Y')
-ax.set_zlabel('Position Z')
+# Créer un tableau de coordonnées
+coordonnees = np.stack((valeurs_posX, valeurs_posY, valeurs_posZ), axis=-1)
+
+# Calculer les valeurs minimales et maximales pour chaque déterminant
+detMC_min = np.min(valeurs_detMC)
+detMC_max = np.max(valeurs_detMC)
+SVD_det_min = np.min(valeurs_SVD_det)
+SVD_det_max = np.max(valeurs_SVD_det)
+
+# Afficher les coordonnées correspondant aux valeurs minimales et les valeurs maximales pour chaque déterminant
+print("detMC :")
+print("Min :", detMC_min)
+print("Max :", detMC_max)
+
+print("\nSVD_det :")
+print("Min :", SVD_det_min)
+print("Coordonnées :")
+print("Max :", SVD_det_max)
+
+# Trier les valeurs des déterminants et sélectionner les 100 indices les plus bas
+detMC_argsort = np.argsort(valeurs_detMC)
+detMC_lowest_indices = detMC_argsort[:100]
+
+SVD_det_argsort = np.argsort(valeurs_SVD_det)
+SVD_det_lowest_indices = SVD_det_argsort[:100]
+
+# Extraire les coordonnées correspondantes
+detMC_lowest_coordonnees = coordonnees[detMC_lowest_indices]
+SVD_det_lowest_coordonnees = coordonnees[SVD_det_lowest_indices]
+
+# Créer les graphiques 3D pour les points de valeur minimale de detMC et SVD_det
+fig1 = plt.figure()
+ax1 = fig1.add_subplot(111, projection='3d')
+ax1.scatter(detMC_lowest_coordonnees[:, 0], detMC_lowest_coordonnees[:, 1], detMC_lowest_coordonnees[:, 2], label='detMC 100 lowest')
+ax1.set_xlabel('X')
+ax1.set_ylabel('Y')
+ax1.set_zlabel('Z')
+ax1.legend()
+
+fig2 = plt.figure()
+ax2 = fig2.add_subplot(111, projection='3d')
+ax2.scatter(SVD_det_lowest_coordonnees[:, 0], SVD_det_lowest_coordonnees[:, 1], SVD_det_lowest_coordonnees[:, 2], label='SVD_det 100 lowest')
+ax2.set_xlabel('X')
+ax2.set_ylabel('Y')
+ax2.set_zlabel('Z')
+ax2.legend()
 
 plt.show()
