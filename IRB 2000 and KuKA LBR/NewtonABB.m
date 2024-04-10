@@ -13,8 +13,7 @@ function [tetas]=NewtonABB(thetas,M,filename)
     % Initialisation de la liste pour stocker les valeurs du déterminant
     detMC_values = [];
     SVD_det_values = [];
-    %pInv_det_values = [];
-    %truncated_det_values = [];
+    truncated_det_values = [];
     detmean_values = [];
     positionsX_values = [];
     positionsY_values = [];
@@ -136,15 +135,13 @@ function [tetas]=NewtonABB(thetas,M,filename)
        f(12)=f12(t1,t2,t3,t4,t5,t6,M);
 
        % Calculer le déterminant de la matrice des moindres carrés
-       det = determinant_Jacobienne(J);
+       det = determinant_Jacobian(J);
 
        % Ajouter la valeur du déterminant à la liste
        detMC_values(end+1) = det(1);
        SVD_det_values(end+1) = det(2);
-       %pInv_det_values(end+1) = det(3);
-       %truncated_det_values(end+1) = det(4);
-       %detmean_values(end+1) = det(5);
-       detmean_values(end+1) = det(3);
+       truncated_det_values(end+1) = det(3);
+       detmean_values(end+1) = det(4);
 
        % Extraire les positions X, Y et Z du robot de la matrice de transformation M
        positionX = M(1,4);
@@ -184,8 +181,7 @@ function [tetas]=NewtonABB(thetas,M,filename)
     data.posZ = positionsZ_values;
     data.detMC = detMC_values;
     data.SVD_det = SVD_det_values;
-    %data.pInv_det = pInv_det_values;
-    %data.truncated_det = truncated_det_values;
+    data.truncated_det = truncated_det_values;
     data.detmean = detmean_values;
 
     % Enregistrer la liste des valeurs dans un fichier JSON

@@ -18,18 +18,19 @@ function detJ = determinant_Jacobian(J)
     [m, n] = size(J);
     %% Check if the matrix is square
     if m ~= n
-    %    % The matrix is not square, truncate the matrix by removing the last rows
+        % The matrix is not square, truncate the matrix by removing the last rows
         J_truncated = J(1:n, :);
     else
-    %    % The matrix is square, no truncation is necessary
+        % The matrix is square, no truncation is necessary
         J_truncated = J;
     end
     %% Calculate the determinant of the truncated matrix
     truncated_det = det(J_truncated);
 
     % Calculate the mean of the determinants
-    det_mean = mean([detMC, SVD_det, pInv_det, truncated_det]);
+    det_mean = mean([detMC, SVD_det, truncated_det]);
     %det_mean = mean([detMC, SVD_det]);
-    detJ = [detMC, SVD_det, pInv_det, truncated_det, det_mean];
+    detJ = [detMC, SVD_det, truncated_det, det_mean];
+    %detJ = [detMC, SVD_det, det_mean];
     %detJ = [detMC, SVD_det, det_mean];
 end

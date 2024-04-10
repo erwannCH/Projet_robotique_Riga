@@ -1,13 +1,20 @@
-function [tetas]=Newton(M,tetas)
-%Función desarrollada por Emmanuel Merchán
-%Resuelve el problema cinemático inverso a partir de la matriz de entrada [M]
-%que contiene la orientación del efector final con repecto a la base nx...az
-%y la posición deseada px,py y pz.
+function [tetas]=Newton(M,tetas, filename)
+%Funciï¿½n desarrollada por Emmanuel Merchï¿½n
+%Resuelve el problema cinemï¿½tico inverso a partir de la matriz de entrada [M]
+%que contiene la orientaciï¿½n del efector final con repecto a la base nx...az
+%y la posiciï¿½n deseada px,py y pz.
 
 
 
 damp=1;
 
+detMC_values = [];
+SVD_det_values = [];
+truncated_det_values = [];
+detmean_values = [];
+positionsX_values = [];
+positionsY_values = [];
+positionsZ_values = [];
 
 t1=tetas(1);
 t2=tetas(2);
@@ -137,6 +144,26 @@ for n=1:100
    f(11)=f11(t1,t2,t3,t4,t5,t6,M);
    f(12)=f12(t1,t2,t3,t4,t5,t6,M);
 
+   % Calculer le dÃ©terminant de la matrice des moindres carrÃ©s
+       det = determinant_Jacobian(J);
+
+       % Ajouter la valeur du dÃ©terminant Ã  la liste
+       detMC_values(end+1) = det(1);
+       SVD_det_values(end+1) = det(2);
+       truncated_det_values(end+1) = det(3);
+       detmean_values(end+1) = det(4);
+       %detmean_values(end+1) = det(3);
+
+       % Extraire les positions X, Y et Z du robot de la matrice de transformation M
+       positionX = M(1,4);
+       positionY = M(2,4);
+       positionZ = M(3,4);
+
+       % Ajouter la valeur des positions Ã  la liste
+       positionsX_values(end+1) = positionX;
+       positionsY_values(end+1) = positionY;
+       positionsZ_values(end+1) = positionZ;
+
 
       
 %ds= -J\f';
@@ -162,8 +189,22 @@ else
     t2_li=-70;t2_ls=95+t3;
 end
    
-   
-%Normalizar a 360º
+    % Ajouter les positions du robot Ã  la structure de donnÃ©es et le dÃ©terminant
+    data.posX = positionsX_values;
+    data.posY = positionsY_values;
+    data.posZ = positionsZ_values;
+    data.detMC = detMC_values;
+    data.SVD_det = SVD_det_values;
+    data.truncated_det = truncated_det_values;
+    data.detmean = detmean_values;
+
+    % Enregistrer la liste des valeurs dans un fichier JSON
+    jsonStr = jsonencode(data);
+    fid = fopen(filename, 'a');  % Ouvrir le fichier en mode d'ajout
+    fprintf(fid, '%s\n', jsonStr);  % Ã‰crire une nouvelle ligne avec les nouvelles donnÃ©es
+    fclose(fid);
+
+%Normalizar a 360ï¿½
 rnd=t/360;
 entrnd=fix(rnd);
 kk2=rnd-entrnd;
@@ -181,7 +222,7 @@ t=tetas;
    end
 
    end
-%Normalizar a 360º
+%Normalizar a 360ï¿½
 % rnd=kk/360;
 % entrnd=fix(rnd);
 % kk2=rnd-entrnd;

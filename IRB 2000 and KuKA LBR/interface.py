@@ -9,156 +9,159 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 
-# Chemins de base pour les fichiers ABB et KUKA
+# Base paths for ABB and KUKA files
 abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
 kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
+IRB_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/IRB/"
 
-# Liste des noms de fichiers
-noms_fichiers = ["TrajectoryNr1ABB", "TrajectoryNr2ABB", "TrajectoryNr3ABB", "TrajectoryNrXABB", "TrajectoryNrYABB", "TrajectoryNr1KUKA", "TrajectoryNr2KUKA"]
+# List of file names
+file_names = ["TrajectoryNr1ABB", "TrajectoryNr2ABB", "TrajectoryNr3ABB", "TrajectoryNrXABB", "TrajectoryNrYABB", "TrajectoryNr1KUKA", "TrajectoryNr2KUKA", "trayectoria_IRB"]
 
-# Liste des options pour les données
-options_donnees = ["detMC", "SVD_det", "detmean", "Position X", "Position Y", "Position Z"]
+# List of options for data
+data_options = ["detMC", "SVD_det", "detmean", "Position X", "Position Y", "Position Z"]
 
-# Fonction pour extraire les valeurs du fichier JSON
-def extraire_valeurs_json(chemin_fichier):
-    valeurs_detMC = []
-    valeurs_SVD_det = []
-    valeurs_pInv_det = []
-    valeurs_truncated_det = []
-    valeurs_detmean = []
-    valeurs_posX = []
-    valeurs_posY = []
-    valeurs_posZ = []
-    with open(chemin_fichier, 'r') as fichier:
-        for ligne in fichier:
+# Function to extract values from JSON file
+def extract_json_values(file_path):
+    detMC_values = []
+    SVD_det_values = []
+    pInv_det_values = []
+    truncated_det_values = []
+    detmean_values = []
+    posX_values = []
+    posY_values = []
+    posZ_values = []
+    with open(file_path, 'r') as file:
+        for line in file:
             try:
-                donnees = json.loads(ligne)
-                if 'detMC' in donnees:
-                    valeurs_detMC.append(donnees['detMC'])
-                if 'SVD_det' in donnees:
-                    valeurs_SVD_det.append(donnees['SVD_det'])
-                if 'pInv_det' in donnees:
-                    valeurs_pInv_det.append(donnees['pInv_det'])
-                if 'truncated_det' in donnees:
-                    valeurs_truncated_det.append(donnees['truncated_det'])
-                if 'detmean' in donnees:
-                    valeurs_detmean.append(donnees['detmean'])
-                if 'posX' in donnees:
-                    if isinstance(donnees['posX'], list):
-                        valeurs_posX.extend(donnees['posX'])
+                data = json.loads(line)
+                if 'detMC' in data:
+                    detMC_values.append(data['detMC'])
+                if 'SVD_det' in data:
+                    SVD_det_values.append(data['SVD_det'])
+                if 'pInv_det' in data:
+                    pInv_det_values.append(data['pInv_det'])
+                if 'truncated_det' in data:
+                    truncated_det_values.append(data['truncated_det'])
+                if 'detmean' in data:
+                    detmean_values.append(data['detmean'])
+                if 'posX' in data:
+                    if isinstance(data['posX'], list):
+                        posX_values.extend(data['posX'])
                     else:
-                        valeurs_posX.append(donnees['posX'])
-                if 'posY' in donnees:
-                    if isinstance(donnees['posY'], list):
-                        valeurs_posY.extend(donnees['posY'])
+                        posX_values.append(data['posX'])
+                if 'posY' in data:
+                    if isinstance(data['posY'], list):
+                        posY_values.extend(data['posY'])
                     else:
-                        valeurs_posY.append(donnees['posY'])
-                if 'posZ' in donnees:
-                    if isinstance(donnees['posZ'], list):
-                        valeurs_posZ.extend(donnees['posZ'])
+                        posY_values.append(data['posY'])
+                if 'posZ' in data:
+                    if isinstance(data['posZ'], list):
+                        posZ_values.extend(data['posZ'])
                     else:
-                        valeurs_posZ.append(donnees['posZ'])
+                        posZ_values.append(data['posZ'])
             except json.JSONDecodeError:
                 # Handle invalid JSON
                 pass
-    return valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs_detmean, valeurs_posX, valeurs_posY, valeurs_posZ
+    return detMC_values, SVD_det_values, pInv_det_values, truncated_det_values, detmean_values, posX_values, posY_values, posZ_values
 
-def aplatir_liste(liste):
-    aplatie = []
-    for elem in liste:
+def flatten_list(lst):
+    flat = []
+    for elem in lst:
         if isinstance(elem, (list, tuple)):
-            aplatie.extend(aplatir_liste(elem))
+            flat.extend(flatten_list(elem))
         else:
-            aplatie.append(elem)
-    return aplatie
+            flat.append(elem)
+    return flat
 
-class InterfaceGraphique:
+class GraphicalInterface:
     def __init__(self, master):
         self.master = master
         self.master.title("Selecting the data")
 
-        self.var_fichier = tk.StringVar(self.master)
-        self.var_fichier.set(noms_fichiers[0])  # Valeur par défaut
+        self.var_file = tk.StringVar(self.master)
+        self.var_file.set(file_names[0])  # Default value
 
-        self.var_donnees = tk.StringVar(self.master)
-        self.var_donnees.set(options_donnees[0])  # Valeur par défaut
+        self.var_data = tk.StringVar(self.master)
+        self.var_data.set(data_options[0])  # Default value
 
-        self.var_type_graphique = tk.StringVar(self.master)
-        self.var_type_graphique.set("2D")  # Valeur par défaut
+        self.var_graph_type = tk.StringVar(self.master)
+        self.var_graph_type.set("2D")  # Default value
 
-        # Création des menus déroulants
-        frame_gauche = tk.Frame(self.master)
-        frame_gauche.pack(side=tk.LEFT, padx=10, pady=10)
+        # Create dropdown menus
+        frame_left = tk.Frame(self.master)
+        frame_left.pack(side=tk.LEFT, padx=10, pady=10)
 
-        tk.Label(frame_gauche, text="Selecting a file :").pack()
-        tk.OptionMenu(frame_gauche, self.var_fichier, *noms_fichiers).pack()
+        tk.Label(frame_left, text="Selecting a file :").pack()
+        tk.OptionMenu(frame_left, self.var_file, *file_names).pack()
 
-        tk.Label(frame_gauche, text="Selecting the data :").pack()
-        tk.OptionMenu(frame_gauche, self.var_donnees, *options_donnees).pack()
+        tk.Label(frame_left, text="Selecting the data :").pack()
+        tk.OptionMenu(frame_left, self.var_data, *data_options).pack()
 
-        tk.Label(frame_gauche, text="Selecting the type of graph :").pack()
-        tk.OptionMenu(frame_gauche, self.var_type_graphique, "2D", "3D").pack()
+        tk.Label(frame_left, text="Selecting the type of graph :").pack()
+        tk.OptionMenu(frame_left, self.var_graph_type, "2D", "3D").pack()
 
-        # Création du bouton pour afficher les données
-        self.button_afficher = tk.Button(frame_gauche, text="print the data", command=self.afficher_donnees)
-        self.button_afficher.pack()
+        # Create button to display data
+        self.button_display = tk.Button(frame_left, text="print the data", command=self.display_data)
+        self.button_display.pack()
 
-        # Création du bouton pour quitter l'application
-        self.button_exit = tk.Button(frame_gauche, text="Exit", command=self.master.quit)
+        # Create button to quit the application
+        self.button_exit = tk.Button(frame_left, text="Exit", command=self.master.quit)
         self.button_exit.pack()
 
-        # Création de la zone pour les graphiques
+        # Create area for graphs
         self.figure = plt.figure()
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.master)
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-    def afficher_donnees(self):
-        # Récupérer le nom du fichier et les données sélectionnées
-        nom_fichier = self.var_fichier.get()
-        donnees_selectionnees = self.var_donnees.get()
-        type_graphique = self.var_type_graphique.get()
+    def display_data(self):
+        # Get the file name and selected data
+        file_name = self.var_file.get()
+        selected_data = self.var_data.get()
+        graph_type = self.var_graph_type.get()
 
-        if "ABB" in nom_fichier:
+        if "ABB" in file_name:
             base_path = abb_base_path
-        elif "KUKA" in nom_fichier:
+        elif "KUKA" in file_name:
             base_path = kuka_base_path
+        elif "IRB" in file_name:
+            base_path = IRB_base_path
         else:
-            print("Nom de fichier invalide")
+            print("Invalid file name")
             exit()
 
-        # Charger les données à partir du fichier JSON
-        chemin_fichier = base_path + nom_fichier + ".json"
-        valeurs_detMC, valeurs_SVD_det, valeurs_pInv_det, valeurs_truncated_det, valeurs_detmean, valeurs_posX, valeurs_posY, valeurs_posZ = extraire_valeurs_json(chemin_fichier)
+        # Load data from JSON file
+        file_path = base_path + file_name + ".json"
+        detMC_values, SVD_det_values, pInv_det_values, truncated_det_values, detmean_values, posX_values, posY_values, posZ_values = extract_json_values(file_path)
 
-        # Afficher les données sélectionnées
-        if donnees_selectionnees == "detMC":
-            valeurs_detMC = aplatir_liste(valeurs_detMC)
-            self.afficher_graphique(valeurs_posX, valeurs_posY, valeurs_posZ, valeurs_detMC, type_graphique)
-        elif donnees_selectionnees == "SVD_det":
-            valeurs_SVD_det = aplatir_liste(valeurs_SVD_det)
-            self.afficher_graphique(valeurs_posX, valeurs_posY, valeurs_posZ, valeurs_SVD_det, type_graphique)
-        elif donnees_selectionnees == "detmean":
-            valeurs_detmean = aplatir_liste(valeurs_detmean)
-            self.afficher_graphique(valeurs_posX, valeurs_posY, valeurs_posZ, valeurs_detmean, type_graphique)
-        elif donnees_selectionnees == "Position X":
-            self.afficher_graphique(valeurs_posX, type_graphique)
-        elif donnees_selectionnees == "Position Y":
-            self.afficher_graphique(valeurs_posY, type_graphique)
-        elif donnees_selectionnees == "Position Z":
-            self.afficher_graphique(valeurs_posZ, type_graphique)
+        # Display selected data
+        if selected_data == "detMC":
+            detMC_values = flatten_list(detMC_values)
+            self.display_graph(posX_values, posY_values, posZ_values, detMC_values, graph_type)
+        elif selected_data == "SVD_det":
+            SVD_det_values = flatten_list(SVD_det_values)
+            self.display_graph(posX_values, posY_values, posZ_values, SVD_det_values, graph_type)
+        elif selected_data == "detmean":
+            detmean_values = flatten_list(detmean_values)
+            self.display_graph(posX_values, posY_values, posZ_values, detmean_values, graph_type)
+        elif selected_data == "Position X":
+            self.display_graph(posX_values, graph_type)
+        elif selected_data == "Position Y":
+            self.display_graph(posY_values, graph_type)
+        elif selected_data == "Position Z":
+            self.display_graph(posZ_values, graph_type)
 
-    def afficher_graphique(self, x, y, z=None, valeurs=None, type_graphique="2D"):
+    def display_graph(self, x, y, z=None, values=None, graph_type="2D"):
         self.figure.clear()
-        if type_graphique == "2D":
-            self.figure.add_subplot(111).plot(valeurs)
-        elif type_graphique == "3D":
-            if z is not None and valeurs is not None:
+        if graph_type == "2D":
+            self.figure.add_subplot(111).plot(values)
+        elif graph_type == "3D":
+            if z is not None and values is not None:
                 ax = self.figure.add_subplot(111, projection='3d')
-                norm = Normalize(vmin=np.min(valeurs), vmax=np.max(valeurs))
+                norm = Normalize(vmin=np.min(values), vmax=np.max(values))
                 scalarmappable = ScalarMappable(norm=norm, cmap='viridis')
                 scalarmappable.set_array([])
-                ax.scatter(x, y, z, c=valeurs, norm=norm, cmap='viridis')
+                ax.scatter(x, y, z, c=values, norm=norm, cmap='viridis')
                 self.figure.colorbar(scalarmappable)
             else:
                 ax = self.figure.add_subplot(111, projection='3d')
@@ -169,5 +172,5 @@ class InterfaceGraphique:
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 root = tk.Tk()
-app = InterfaceGraphique(root)
+app = GraphicalInterface(root)
 root.mainloop()

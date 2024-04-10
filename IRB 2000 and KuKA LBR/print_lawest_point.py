@@ -5,6 +5,7 @@ import numpy as np
 # Base paths for ABB and KUKA files
 abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
 kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
+IRB_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/IRB/"
 
 # File name
 #name = "TrajectoryNr1ABB"
@@ -14,6 +15,7 @@ kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuk
 #name = "TrajectoryNrYABB"
 #name = "TrajectoryNr1KUKA"
 #name = "TrajectoryNr2KUKA"
+#name = "trayectoria_IRB"
 name = "TrajectoryAllPointsABB"
 
 # Determine the base path based on the file name
@@ -21,6 +23,8 @@ if "ABB" in name:
     base_path = abb_base_path
 elif "KUKA" in name:
     base_path = kuka_base_path
+elif "IRB" in name:
+    base_path = IRB_base_path
 else:
     print("Invalid file name")
     exit()

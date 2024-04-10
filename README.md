@@ -51,8 +51,8 @@ This project focuses on robot trajectory calculations using MATLAB and Python. T
 │   ├── ABB-IRB-2600ID-8-2-00.robot
 │   ├── ABB.m
 │   ├── ABBplot.m
-│   ├── best_chemain copy.py
-│   ├── best_chemain.py
+│   ├── best_Trajectory copy.py
+│   ├── best_Trajectory.py
 │   ├── ...
 │   └── print_det and compare.py
 └── Robot Package
@@ -86,7 +86,7 @@ This project focuses on robot trajectory calculations using MATLAB and Python. T
 4. For more detailed analysis, use the following Python scripts:
 	* `print 3d HeatMap.py`: Displays the heatmap of the chosen trajectory.
 	* `print_lawest_point.py`: Shows the minimum and maximum values of a trajectory and plots the 3D points with the lowest values.
-	* `best_chemain.py`: Displays the best path between two points.
+	* `best_Trajectory.py`: Displays the best path between two points.
 	* `print_all_det.py`: Prints the values of different determinants tested, each using a different calculation method.
 	* `print2d.py`: Displays the movements along the X, Y, and Z axes, as well as the value of the chosen determinant.
 	* `print_det and compare.py`: This script reads data from multiple JSON files and extracts specific values, then plots the values ('detMC', 'SVD_det', and 'detmean') in separate figures with multiple curves, one for each file. The JSON file paths are determined using a wildcard pattern. The script then extracts values such as 'detMC', 'SVD_det', and 'detmean' from each JSON file. It then flattens the lists and plots the values.
