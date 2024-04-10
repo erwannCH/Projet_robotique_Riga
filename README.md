@@ -26,6 +26,27 @@ This project focuses on robot trajectory calculations using MATLAB and Python. T
 │   └── kuka
 │       ├── TrajectoryNr1KUKA.json
 │       └── TrajectoryNr2KUKA.json
+├── figure
+│   ├── ineterface.py
+│   ├── TrajectoryAllPointsABB  terminal.txt
+│   ├── TrajectoryAllPointsABB detMC 100 lowest.png
+│   ├── TrajectoryAllPointsABB detSVD 100 lowest.png
+│   ├── TrajectoryNr1ABB det.png
+│   ├── TrajectoryNr1ABB Heat Map.png
+│   ├── TrajectoryNr1ABB det.png
+│   ├── TrajectoryNr1ABB x.png
+│   ├── TrajectoryNr1ABB y.png
+│   ├── TrajectoryNr1ABB z.png
+│   ├── TrajectoryNr1ABB.png
+│   ├── TrajectoryNr1KUKA.png
+│   ├── TrajectoryNr2ABB.png
+│   ├── TrajectoryNr2KUKA.png
+│   ├── TrajectoryNr3ABB.png
+│   ├── TrajectoryNrXABB.png
+│   ├── TrajectoryNrYABB.png
+│   ├── detmc values.png
+│   ├── detmen values.png
+│   └── svd_det values.png
 ├── IRB 2000 and KuKA LBR
 │   ├── ABB-IRB-2600ID-8-2-00.robot
 │   ├── ABB.m
@@ -47,12 +68,13 @@ This project focuses on robot trajectory calculations using MATLAB and Python. T
 - `code.txt` and `This MATLAB code defines.txt`: Text files containing code snippets or descriptions.
 - `CI ABB IRB4400`: Directory containing MATLAB scripts for calculating robot trajectories.
 - `data`: Directory containing JSON files with recorded robot trajectory data.
+- `figure`: Directory containing example images and output files generated from the Python scripts.
 - `IRB 2000 and KuKA LBR`: Directory containing MATLAB and Python scripts for analyzing and visualizing robot trajectory data.
 - `Robot Package`: Directory containing robot model files.
 
 ## Project Workflow
 
-1. Use the MATLAB scripts in the `CI ABB IRB4400` directory to calculate robot trajectories.
+1. Use the MATLAB scripts in the `IRB 2000 and KuKA LBR` directory to calculate robot trajectories.
 2. The calculated trajectories are saved as JSON files in the `data` directory.
 3. Use the Python scripts in the `IRB 2000 and KuKA LBR` directory to analyze and visualize the trajectory data from the JSON files.
 
@@ -62,8 +84,9 @@ This project focuses on robot trajectory calculations using MATLAB and Python. T
 2. Download the `TrajectoryAllPointsABB.json` file from this [link](https://drive.google.com/file/d/1mByE6CzKdqv8bsGwyvvT2m6BbIiX9ST1/view?usp=sharing) and place it in the `data/abb` directory.
 3. Run the `interface.py` Python script for a general visualization and exploration of the data.
 4. For more detailed analysis, use the following Python scripts:
-	* `print_3d.py`: Displays the heatmap of the chosen trajectory.
-	* `minMax.py`: Shows the minimum and maximum values of a trajectory and plots the 3D points with the lowest values.
+	* `print 3d HeatMap.py`: Displays the heatmap of the chosen trajectory.
+	* `print_lawest_point.py`: Shows the minimum and maximum values of a trajectory and plots the 3D points with the lowest values.
 	* `best_chemain.py`: Displays the best path between two points.
 	* `print_all_det.py`: Prints the values of different determinants tested, each using a different calculation method.
-	* `print.py`: Displays the movements along the X, Y, and Z axes, as well as the value of the chosen determinant.
+	* `print2d.py`: Displays the movements along the X, Y, and Z axes, as well as the value of the chosen determinant.
+	* `print_det and compare.py`: This script reads data from multiple JSON files and extracts specific values, then plots the values ('detMC', 'SVD_det', and 'detmean') in separate figures with multiple curves, one for each file. The JSON file paths are determined using a wildcard pattern. The script then extracts values such as 'detMC', 'SVD_det', and 'detmean' from each JSON file. It then flattens the lists and plots the values.
