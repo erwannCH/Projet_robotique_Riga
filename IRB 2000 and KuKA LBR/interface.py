@@ -159,9 +159,9 @@ class GraphicalInterface:
             if z is not None and values is not None:
                 ax = self.figure.add_subplot(111, projection='3d')
                 norm = Normalize(vmin=np.min(values), vmax=np.max(values))
-                scalarmappable = ScalarMappable(norm=norm, cmap='viridis')
+                scalarmappable = ScalarMappable(norm=norm, cmap='Spectral')
                 scalarmappable.set_array([])
-                ax.scatter(x, y, z, c=values, norm=norm, cmap='viridis')
+                ax.scatter(x, y, z, c=values, norm=norm, cmap='Spectral')
                 self.figure.colorbar(scalarmappable)
             else:
                 ax = self.figure.add_subplot(111, projection='3d')
