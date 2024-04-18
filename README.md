@@ -87,7 +87,17 @@ Getting Started
 
 1. Clone this repository to your local machine.
 2. Download the `TrajectoryAllPointsABB.json` file from this [link](https://drive.google.com/file/d/1mByE6CzKdqv8bsGwyvvT2m6BbIiX9ST1/view?usp=sharing) and place it in the `data/abb` directory.
-3. Run the `interface.py` Python script for a general visualization and exploration of the data.
+3. Run the `interface.py` Python script for a general visualization (GUI) to interactively explore and visualize the robot trajectory data stored in JSON files. The GUI allows users to select a file, choose the data type to visualize (e.g., determinant values, position in X, Y, or Z axis), and pick the graph type (2D or 3D).
+	To use the `interface.py` script, follow these steps:
+	* Make sure you have the required JSON files in the appropriate directories (`data/abb`, `data/kuka`, or `data/IRB`).
+	* Run the `interface.py` script. A window will appear with dropdown menus and buttons.
+	* Use the "Selecting a file" dropdown menu to choose the desired JSON file containing the trajectory data.
+	* Use the "Selecting the data" dropdown menu to select the type of data you want to visualize (detMC, SVD\_det, detmean, Position X, Position Y, or Position Z).
+	* Use the "Selecting the type of graph" dropdown menu to choose between a 2D or 3D graph.
+	* Click the "print the data" button to generate and display the graph based on your selected options.
+	* To exit the application, click the "Exit" button.
+
+The GUI will update the graph based on your selections, allowing you to easily explore different aspects of the robot trajectory data.
 4. For more detailed analysis, use the following Python scripts:
 	* `print 3d HeatMap.py`: Displays the heatmap of the chosen trajectory. To use this script, open it and set the `name` variable to the desired JSON file name (without the .json extension). The script will automatically determine the base path based on the file name. Run the script to generate a 3D heatmap of the trajectory.
 	* `print_lawest_point.py`: Shows the minimum and maximum values of a trajectory and plots the 3D points with the lowest values. To use this script, open it and set the `name` variable to the desired JSON file name (without the .json extension). The script will automatically determine the base path based on the file name. Run the script to see the minimum and maximum values and the corresponding 3D points.
