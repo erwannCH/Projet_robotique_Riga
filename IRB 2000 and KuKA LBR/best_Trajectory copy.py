@@ -6,9 +6,9 @@ import heapq
 import networkx as nx
 
 # Chemins de base pour les fichiers ABB et KUKA
-abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
-kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
-IRB_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/IRB/"
+abb_base_path = "../Pronjet_robotique_Riga/data/abb/"
+kuka_base_path = "../Pronjet_robotique_Riga/data/kuka/"
+IRB_base_path = "../Pronjet_robotique_Riga/data/IRB/"
 
 # Nom du fichier
 name = "TrajectoryAllPointsABB"

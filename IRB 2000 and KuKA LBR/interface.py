@@ -10,9 +10,9 @@ from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 
 # Base paths for ABB and KUKA files
-abb_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/"
-kuka_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/kuka/"
-IRB_base_path = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/IRB/"
+abb_base_path = "../Pronjet_robotique_Riga/data/abb/"
+kuka_base_path = "../Pronjet_robotique_Riga/data/kuka/"
+IRB_base_path = "../Pronjet_robotique_Riga/data/IRB/"
 
 # List of file names
 file_names = ["TrajectoryNr1ABB", "TrajectoryNr2ABB", "TrajectoryNr3ABB", "TrajectoryNrXABB", "TrajectoryNrYABB", "TrajectoryNr1KUKA", "TrajectoryNr2KUKA", "trayectoria_IRB"]

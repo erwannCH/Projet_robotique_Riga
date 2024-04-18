@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import os
 
 # Path to the files
-# waring do not have TrajectoryAllPointsABB.json in C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/
-file_paths = "C:/Users/erwan/OneDrive/Bureau/Pronjet_robotique_Riga/data/abb/*.json"
+# waring do not have TrajectoryAllPointsABB.json in ../Pronjet_robotique_Riga/data/abb/
+file_paths = "../Pronjet_robotique_Riga/data/abb/*.json"
 
 # List to store the values of all files
 detMC_values_all = []
