@@ -97,7 +97,6 @@ Getting Started
 	* Click the "print the data" button to generate and display the graph based on your selected options.
 	* To exit the application, click the "Exit" button.
 
-The GUI will update the graph based on your selections, allowing you to easily explore different aspects of the robot trajectory data.
 4. For more detailed analysis, use the following Python scripts:
 	* `print 3d HeatMap.py`: Displays the heatmap of the chosen trajectory. To use this script, open it and set the `name` variable to the desired JSON file name (without the .json extension). The script will automatically determine the base path based on the file name. Run the script to generate a 3D heatmap of the trajectory.
 	* `print_lawest_point.py`: Shows the minimum and maximum values of a trajectory and plots the 3D points with the lowest values. To use this script, open it and set the `name` variable to the desired JSON file name (without the .json extension). The script will automatically determine the base path based on the file name. Run the script to see the minimum and maximum values and the corresponding 3D points.
